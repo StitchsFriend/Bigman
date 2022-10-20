@@ -14,6 +14,7 @@ public class TrackScheduler extends AudioEventAdapter{
     //constructure
     public TrackScheduler(AudioPlayer audioPlayer)
     {
+
         this.audioPlayer=audioPlayer;
         this.queue=new LinkedBlockingDeque<>();
     }

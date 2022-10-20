@@ -1,4 +1,6 @@
-package bigman;
+package bigmanTest;
+
+import bigman.BotStartUp;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -39,7 +41,7 @@ public class logger extends ListenerAdapter {
 
         // This would just be some text file with only the token in it
         // Use Files.readString in java 11+
-       // String token = "MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18";
+        // String token = "MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18";
 
         // 2. Using environment variable:
         // String token = System.getenv("TOKEN");
@@ -107,7 +109,7 @@ public class logger extends ListenerAdapter {
             // The queue(...) means that we are making a REST request to the discord API server!
             // Usually, this is done asynchronously on another thread which handles scheduling and rate-limits.
             // The (ping -> ...) is called a lambda expression, if you're unfamiliar with this syntax it is HIGHLY recommended to look it up!
-         botStartUp.bot.getRestPing().queue(ping ->
+            botStartUp.bot.getRestPing().queue(ping ->
                     // shows ping in milliseconds
                     System.out.println("Logged in with ping: " + ping)
             );
@@ -168,12 +170,9 @@ public class logger extends ListenerAdapter {
 
         }
         // checking usr if in audio channel for using play music
-        /*
-        if(message.getContentRaw().equals( botPrefix + "play") && !event.getMember().getVoiceState().inAudioChannel() )
-        {
-            channel.sendMessage("You need to be in a voice chanel for the command to work.").queue();
-        }
-        */
+
+
+
         // Using specialization, you can check concrete types of the channel union
 
         if (channel.getType() == ChannelType.TEXT) {

@@ -32,7 +32,14 @@ public class PlayerManager {
         AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
 
     }
-
+    public static PlayerManager getINSTANCE()
+    {
+        if(INSTANCE == null)
+        {
+            INSTANCE = new PlayerManager();
+        }
+        return INSTANCE;
+    }
     public GuildMusicManager getMusicManager(Guild guild)
     {
         //  is going to be a lavaPlayer expression
@@ -46,7 +53,7 @@ public class PlayerManager {
     // bot get
     public void loadAndPlay(TextChannel textChannel, String trackURL)
     {
-        final GuildMusicManager musicManager=this.getMusicManager(textChannel.getGuild());
+       final GuildMusicManager musicManager=this.getMusicManager(textChannel.getGuild());
 
         this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
             @Override
@@ -75,6 +82,12 @@ public class PlayerManager {
                             .addContent(tracks.get(0).getInfo().author)
                             .addContent("'**")
                             .queue();
+
+
+                    for(final AudioTrack track : tracks)
+                    {
+                        musicManager.scheduler.queue(track);
+                    }
                 }
             }
 
@@ -90,12 +103,5 @@ public class PlayerManager {
         });
     }
 
-    public static PlayerManager getINSTANCE()
-    {
-        if(INSTANCE == null)
-        {
-            INSTANCE = new PlayerManager();
-        }
-        return INSTANCE;
-    }
+
 }
