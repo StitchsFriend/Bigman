@@ -11,10 +11,11 @@ public class TrackScheduler extends AudioEventAdapter{
 
     public final AudioPlayer audioPlayer;
     public final BlockingQueue<AudioTrack> queue;
+    public boolean repeating = false;
+    private int count =0;
     //constructure
     public TrackScheduler(AudioPlayer audioPlayer)
     {
-
         this.audioPlayer=audioPlayer;
         this.queue=new LinkedBlockingDeque<>();
     }
@@ -29,13 +30,23 @@ public class TrackScheduler extends AudioEventAdapter{
     public void  nextTrack()
     {
         this.audioPlayer.startTrack(this.queue.poll(),false);
+        if(audioPlayer.getPlayingTrack()==null)
+        {
+
+        }
+        if(repeating){repeating = false;}
     }
+
 // when the track is going to end, this method is going to get called from audio event adapter
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason)
     {
         if(endReason.mayStartNext)
         {
+            if(this.repeating)
+            {
+                this.audioPlayer.startTrack(track.makeClone(),false);
+            }
             nextTrack();
         }
     }

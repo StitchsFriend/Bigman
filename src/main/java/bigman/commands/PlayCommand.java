@@ -2,11 +2,9 @@ package bigman.commands;
 
 import bigman.JDACommands.ExecuteArgs;
 import bigman.JDACommands.ICommand;
+import bigman.music.AudioPlayerSendHandler;
 import bigman.music.PlayerManager;
-import net.dv8tion.jda.api.entities.GuildVoiceState;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -20,7 +18,7 @@ import java.net.URISyntaxException;
 public class PlayCommand extends ListenerAdapter {
     public String botPrefix = "b!g ";
     private  String[] args;
-    public void onMessageReceived(@Nonnull MessageReceivedEvent event)
+    public void onMessageReceived(MessageReceivedEvent event)
     {
 
         TextChannel textChannel = event.getChannel().asTextChannel();
@@ -30,6 +28,12 @@ public class PlayCommand extends ListenerAdapter {
         GuildVoiceState botVoiceState = event.getGuild().getSelfMember().getVoiceState();
         GuildVoiceState memberVoiceState = event.getMember().getVoiceState();
 
+        if (!event.getMessage().getContentRaw().startsWith("b!g play")) return;
+        if (event.getAuthor().isBot()) return;
+
+        Guild guild = event.getGuild();
+        AudioManager manager = guild.getAudioManager();
+       // manager.setSendingHandler(new AudioPlayerSendHandler());
 
         if (message.getContentRaw().startsWith(botPrefix + "play"))
         {
@@ -72,13 +76,15 @@ public class PlayCommand extends ListenerAdapter {
             // notice someone/something connecting.
             textChannel.sendMessage("Connected to the voice channel!").queue();
 
-            String link = String.join(" ",event.getMessage().getContentRaw());
-
+            String link = "https://www.youtube.com/watch?v=zMDGrCKT9co&ab_channel=ChillVibes";
+            /*
             if(!isUrl(link))
             {
                 textChannel.sendMessage("got the link").queue();
                 link = "ytsearch:" + link + " audio";
             }
+
+             */
             PlayerManager.getINSTANCE().loadAndPlay(event.getChannel().asTextChannel(), link);
 
         }

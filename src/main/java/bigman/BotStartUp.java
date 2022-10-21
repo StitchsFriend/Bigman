@@ -2,11 +2,8 @@ package bigman;
 
 import bigman.JDACommands.ICommand;
 import bigman.JDACommands.JDACommands;
-import bigman.commands.FortuneCommand;
-import bigman.commands.JoinCommand;
-import bigman.commands.Play;
+import bigman.commands.*;
 
-import bigman.commands.PlayCommand;
 import bigmanTest.commands.playcommand;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.JDABuilder;
@@ -44,7 +41,8 @@ public class BotStartUp implements EventListener
                         .addEventListeners(new logger())
                         .addEventListeners(new JoinCommand())
                         .addEventListeners(new PlayCommand())
-                        .addEventListeners(new FortuneCommand())
+                       // .addEventListeners(new FortuneCommand())
+                        .addEventListeners(new 求签command())
                        // .addEventListeners(jdaCommands)
                         .build();
 
