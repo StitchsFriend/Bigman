@@ -41,8 +41,8 @@ public class BotStartUp implements EventListener
                         .addEventListeners(new logger())
                         .addEventListeners(new JoinCommand())
                         .addEventListeners(new PlayCommand())
-                       // .addEventListeners(new FortuneCommand())
-                        .addEventListeners(new 求签command())
+                        .addEventListeners(new FortuneCommand())
+
                        // .addEventListeners(jdaCommands)
                         .build();
 
