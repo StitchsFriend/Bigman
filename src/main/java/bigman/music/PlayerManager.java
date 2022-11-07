@@ -57,10 +57,12 @@ public class PlayerManager {
 
         this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
             @Override
-            //track loaded, adding it to the queue
+            //if user pasted a url
             public void trackLoaded(AudioTrack audioTrack) {
+
                 musicManager.scheduler.queue(audioTrack);
-                textChannel.sendMessage("Adding to queue **")
+
+                textChannel.sendMessage("Adding to queue: **")
                         .addContent(audioTrack.getInfo().title)
                         .addContent("'** by ** '")
                         .addContent(audioTrack.getInfo().author)
@@ -73,22 +75,25 @@ public class PlayerManager {
             // getting first track of all the tracks that user searched
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
                 final List<AudioTrack> tracks = audioPlaylist.getTracks();
-                if(!tracks.isEmpty())
-                {
+
                     musicManager.scheduler.queue(tracks.get(0));
                     textChannel.sendMessage("Adding to queue **")
                             .addContent(tracks.get(0).getInfo().title)
-                            .addContent("'** by ** '")
+                            //.addContent(String.valueOf(tracks.size()))
+                            .addContent("`by`")
                             .addContent(tracks.get(0).getInfo().author)
-                            .addContent("'**")
+                           //.addContent(audioPlaylist.getName())
+                            .addContent("**")
                             .queue();
 
-
+                    /*
                     for(final AudioTrack track : tracks)
                     {
                         musicManager.scheduler.queue(track);
                     }
-                }
+
+                     */
+
             }
 
             @Override
@@ -102,6 +107,5 @@ public class PlayerManager {
             }
         });
     }
-
 
 }

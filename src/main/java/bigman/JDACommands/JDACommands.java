@@ -3,7 +3,7 @@ package bigman.JDACommands;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -11,7 +11,6 @@ public class JDACommands extends ListenerAdapter {
 
     private ArrayList<ICommand> commands = new ArrayList();
     private final String prefix;
-
     public String getPrefix() {
         return this.prefix;
     }
@@ -32,16 +31,16 @@ public class JDACommands extends ListenerAdapter {
         this.commands.add(command);
     }
 
+
     private void init(MessageReceivedEvent event) {
         Iterator var2 = this.commands.iterator();
 
         ICommand command;
         do {
-            if (!var2.hasNext()) {
+             if (!var2.hasNext()) {
                 event.getChannel().sendMessage("This command wasn't recognized.").queue();
                 return;
             }
-
             command = (ICommand)var2.next();
         } while(!event.getMessage().getContentRaw().split(" ")[0].equalsIgnoreCase(this.prefix + command.getName()));
 
@@ -55,16 +54,16 @@ public class JDACommands extends ListenerAdapter {
             command.execute(new ExecuteArgs(event));
         }
     }
-
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event == null) {
-            //$$$reportNull$$$0(0);
+           // $$$reportNull$$$0(0);
             event.getChannel().sendMessage("message receive event is null");
         }
 
         if (event.getMessage().getContentRaw().startsWith(this.prefix)) {
             this.init(event);
         }
+
 
     }
 }

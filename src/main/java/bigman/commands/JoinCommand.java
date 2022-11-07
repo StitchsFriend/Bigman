@@ -30,10 +30,9 @@ public class JoinCommand extends ListenerAdapter {
                 textChannel.sendMessage("you not in a vc.").queue();
                 return;
             }
-            if(!memberVoiceState.equals(botVoiceState.getChannel()))
-            {
-                textChannel.sendMessage("you need to be in same vc as bot for this to work").queue();
-                return;
+            if (!memberVoiceState.getChannel().equals(botVoiceState.getChannel())) {
+                textChannel.sendMessage("You need to be in the same voice channel as me for this to work").queue();
+                return ;
             }
             if(event.getMember().getVoiceState().inAudioChannel())
             {
@@ -46,7 +45,7 @@ public class JoinCommand extends ListenerAdapter {
 
             // notice someone/something connecting.
             textChannel.sendMessage("Connected to the voice channel!").queue();
-            return;
+                return ;
             // audioManager.openAudioConnection(memberChanel);
         }
             // member and bot not in same vc

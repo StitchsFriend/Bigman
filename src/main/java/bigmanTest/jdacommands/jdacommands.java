@@ -66,6 +66,7 @@ public class jdacommands extends ListenerAdapter {
             this.init(event);
         }
 
+
     }
 }
 

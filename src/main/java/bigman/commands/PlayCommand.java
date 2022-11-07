@@ -1,29 +1,23 @@
 package bigman.commands;
 
-import bigman.JDACommands.ExecuteArgs;
-import bigman.JDACommands.ICommand;
-import bigman.music.AudioPlayerSendHandler;
 import bigman.music.PlayerManager;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 
-import javax.annotation.Nonnull;
-import javax.lang.model.element.ElementVisitor;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class PlayCommand extends ListenerAdapter {
     public String botPrefix = "b!g ";
-    private  String[] args;
     public void onMessageReceived(MessageReceivedEvent event)
     {
-
         TextChannel textChannel = event.getChannel().asTextChannel();
         VoiceChannel connectedChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        Message message = event.getMessage();
+        Message message= event.getMessage();
 
         GuildVoiceState botVoiceState = event.getGuild().getSelfMember().getVoiceState();
         GuildVoiceState memberVoiceState = event.getMember().getVoiceState();
@@ -33,62 +27,37 @@ public class PlayCommand extends ListenerAdapter {
 
         Guild guild = event.getGuild();
         AudioManager manager = guild.getAudioManager();
-       // manager.setSendingHandler(new AudioPlayerSendHandler());
 
         if (message.getContentRaw().startsWith(botPrefix + "play"))
         {
-            if (connectedChannel == null)
+            if(!memberVoiceState.inAudioChannel())
             {
-                textChannel.sendMessage("you not in a vc.").queue();
+                textChannel.sendMessage("you need to be in vc for this to work").queue();
                 return;
             }
 
+            if(!botVoiceState.inAudioChannel())
+            {
+               final AudioManager audioManager = event.getGuild().getAudioManager();
+                audioManager.openAudioConnection(connectedChannel);
+                textChannel.sendMessage("Connected to the voice channel!").queue();
 
-            if(event.getMember().getVoiceState().inAudioChannel())
+            }
+            // get user input "b!g play url"
+           String input = event.getMessage().getContentRaw().toString();
+            // replace to link1 = "url"
+           String link1 = input.replace("b!g play","");
+
+            PlayerManager.getINSTANCE().loadAndPlay(textChannel, link1);
+
+            if(!isUrl(link1))
             {
                 textChannel.sendMessage("got it").queue();
-                // Gets the audio manager.
-                AudioManager audioManager = event.getGuild().getAudioManager();
-
-                // Connects to the channel.
-                audioManager.openAudioConnection(connectedChannel);
-
-                // notice someone/something connecting.
-                textChannel.sendMessage("Connected to the voice channel!").queue();
-                return;
-                // audioManager.openAudioConnection(memberChanel);
+                link1 = "ytsearch:" + link1 ;
+                PlayerManager.getINSTANCE().loadAndPlay(textChannel, link1);
             }
-            /*
-            if(!memberVoiceState.equals(botVoiceState.getChannel()))
-            {
-                textChannel.sendMessage("you need to be in same vc as bot for this to work").queue();
-                return;
-            }
-            */
-            // member and bot not in same vc
-
-            // Gets the audio manager.
-            AudioManager audioManager = event.getGuild().getAudioManager();
-
-            // Connects to the channel.
-            audioManager.openAudioConnection(connectedChannel);
-
-            // notice someone/something connecting.
-            textChannel.sendMessage("Connected to the voice channel!").queue();
-
-            String link = "https://www.youtube.com/watch?v=zMDGrCKT9co&ab_channel=ChillVibes";
-            /*
-            if(!isUrl(link))
-            {
-                textChannel.sendMessage("got the link").queue();
-                link = "ytsearch:" + link + " audio";
-            }
-
-             */
-            PlayerManager.getINSTANCE().loadAndPlay(event.getChannel().asTextChannel(), link);
 
         }
-
 
     }
 
@@ -98,9 +67,9 @@ public class PlayCommand extends ListenerAdapter {
         {
             new URI(url);
             return true;
-        } catch (URISyntaxException e)
-        {
-            return false;
+        }
+        catch (URISyntaxException e) {
+          return false;
         }
     }
 }

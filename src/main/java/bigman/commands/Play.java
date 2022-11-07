@@ -26,15 +26,16 @@ public class Play implements ICommand {
         //  bot not in VC
         if(!event.getSelfVoiceState().inAudioChannel()) {
 
-            AudioManager audioManager = event.getGuild().getAudioManager();
-            VoiceChannel memberChanel = (VoiceChannel) event.getMemberVoiceState().getChannel();
+           final AudioManager audioManager = event.getGuild().getAudioManager();
+           final  VoiceChannel memberChanel = (VoiceChannel) event.getMemberVoiceState().getChannel();
             audioManager.openAudioConnection(memberChanel);
 
         }
+
         String link = String.join(" ",event.getArgs());
         if(!isUrl(link))
         {
-            link = "ytsearch:" + link + " audio";
+            link = "ytsearch:" + link;
         }
         PlayerManager.getINSTANCE().loadAndPlay(event.getTextChannel(), link);
         return;
