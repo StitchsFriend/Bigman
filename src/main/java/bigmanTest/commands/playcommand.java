@@ -29,7 +29,7 @@ public class playcommand implements IcommandTest {
                 {
                     link = "ytsearch:" + link;
                 }
-                PlayerManager.getINSTANCE().loadAndPlay(textChannel, link);
+                PlayerManager.getINSTANCE().loadAndPlay(textChannel, link,false);
                 return;
             }
             catch (Exception e)
@@ -64,7 +64,7 @@ public class playcommand implements IcommandTest {
             //link = "ytsearch:" + link + " audio"; //"official music video"
         }
 
-        PlayerManager.getINSTANCE().loadAndPlay(textChannel, link);
+        PlayerManager.getINSTANCE().loadAndPlay(textChannel, link,false);
 
     }
 

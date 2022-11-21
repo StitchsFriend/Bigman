@@ -51,41 +51,61 @@ public class PlayerManager {
         });
     }
     // bot get
-    public void loadAndPlay(TextChannel textChannel, String trackURL)
+    public  void loadAndPlay(TextChannel textChannel, String trackURL, boolean playskip)
     {
        final GuildMusicManager musicManager=this.getMusicManager(textChannel.getGuild());
 
         this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
             @Override
             //if user pasted a url
-            public void trackLoaded(AudioTrack audioTrack) {
-
-                musicManager.scheduler.queue(audioTrack);
-
-                textChannel.sendMessage("Adding to queue: **")
+            public void trackLoaded(AudioTrack audioTrack)
+            {
+                if(playskip)
+                {
+                    musicManager.scheduler.queue.addFirst(audioTrack);
+                    textChannel.sendMessage("play skip to: ")
+                            .addContent("`"+audioTrack.getInfo().title+"`"+" by "+audioTrack.getInfo().author)
+                            .queue();
+                    musicManager.scheduler.nextTrack();
+                }
+             else
+                {
+                    musicManager.scheduler.queue(audioTrack);
+                    textChannel.sendMessage("Adding to queue: **")
                         .addContent(audioTrack.getInfo().title)
                         .addContent("'** by ** '")
                         .addContent(audioTrack.getInfo().author)
                         .addContent("'**")
                         .queue();
 
+                }
             }
 
             @Override
+            // if user is search by keyword
             // getting first track of all the tracks that user searched
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
                 final List<AudioTrack> tracks = audioPlaylist.getTracks();
-
+                if(playskip)
+                {
+                    musicManager.scheduler.queue.addFirst(tracks.get(0));
+                    textChannel.sendMessage("play skip to: ")
+                            .addContent("`"+tracks.get(0).getInfo().title+"`"+" by "+tracks.get(0).getInfo().author)
+                            .queue();
+                    musicManager.scheduler.nextTrack();
+                }
+                else
+                {
                     musicManager.scheduler.queue(tracks.get(0));
                     textChannel.sendMessage("Adding to queue **")
                             .addContent(tracks.get(0).getInfo().title)
                             //.addContent(String.valueOf(tracks.size()))
                             .addContent("`by`")
                             .addContent(tracks.get(0).getInfo().author)
-                           //.addContent(audioPlaylist.getName())
+                            //.addContent(audioPlaylist.getName())
                             .addContent("**")
                             .queue();
-
+                }
                     /*
                     for(final AudioTrack track : tracks)
                     {

@@ -32,7 +32,7 @@ public class QueueCommand  extends ListenerAdapter {
                 textChannel.sendMessage("The queue is currently empty").queue();
                 return;
             }
-            //looking the smaller #of track in queue, if have 10 track in queue it will play 10, if 4o track in queue it will play 20.
+            //looking the smaller #of track in queue, if have 3 track in queue it will play 3, if 4o track in queue it will play 5.
             int trackCount = Math.min(queue.size(), 5);
             // conver queue to array list to get each track index
             List<AudioTrack> trackList = new ArrayList<>(queue);

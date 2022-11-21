@@ -1,34 +1,33 @@
 package bigman.commands;
 
+import bigman.music.GuildMusicManager;
 import bigman.music.PlayerManager;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class PlayCommand extends ListenerAdapter {
+public class PlaySkipCommand extends ListenerAdapter {
     public String botPrefix = "b!g ";
+
     public void onMessageReceived(MessageReceivedEvent event)
     {
         TextChannel textChannel = event.getChannel().asTextChannel();
         VoiceChannel connectedChannel = (VoiceChannel) event.getMember().getVoiceState().getChannel();
-        Message message= event.getMessage();
-
         GuildVoiceState botVoiceState = event.getGuild().getSelfMember().getVoiceState();
         GuildVoiceState memberVoiceState = event.getMember().getVoiceState();
+        Message message = event.getMessage();
 
-        if (!event.getMessage().getContentRaw().startsWith("b!g play")) return;
-        if (event.getAuthor().isBot()) return;
 
-        Guild guild = event.getGuild();
-        AudioManager manager = guild.getAudioManager();
 
-        String []comContext = event.getMessage().getContentRaw().split(" ");
-        String com =comContext[0]+" "+comContext[1];
 
-        if (com.equals(botPrefix + "play"))
+        if (message.getContentRaw().startsWith(botPrefix + "playskip"))
         {
             if(!memberVoiceState.inAudioChannel())
             {
@@ -36,13 +35,9 @@ public class PlayCommand extends ListenerAdapter {
                 return;
             }
 
-            if(!botVoiceState.inAudioChannel())
-            {
-               final AudioManager audioManager = event.getGuild().getAudioManager();
-                audioManager.openAudioConnection(connectedChannel);
-                textChannel.sendMessage("Connected to the voice channel!").queue();
+            final AudioManager audioManager = event.getGuild().getAudioManager();
+            audioManager.openAudioConnection(connectedChannel);
 
-            }
             String[] input = event.getMessage().getContentRaw().split(" ", 3);
             String link ;
             link = input[2];
@@ -52,11 +47,9 @@ public class PlayCommand extends ListenerAdapter {
                 link = "ytsearch:" + link ;
 
             }
-            PlayerManager.getINSTANCE().loadAndPlay(textChannel, link,false);
+            PlayerManager.getINSTANCE().loadAndPlay(textChannel, link,true);
         }
-
-    }
-
+        }
     public boolean isUrl(String url)
     {
         try
@@ -65,7 +58,7 @@ public class PlayCommand extends ListenerAdapter {
             return true;
         }
         catch (MalformedURLException e) {
-          return false;
+            return false;
         }
     }
 }

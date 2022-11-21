@@ -1,55 +1,46 @@
-
 package bigman.commands;
 
 import bigman.JDACommands.ExecuteArgs;
 import bigman.JDACommands.ICommand;
-import bigman.music.*;
-
-import net.dv8tion.jda.api.entities.GuildVoiceState;
+import bigman.music.GuildMusicManager;
+import bigman.music.PlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
-
-import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
-public class Play implements ICommand {
-
+public class PlaySkip implements ICommand {
     @Override
     public void execute(ExecuteArgs event) {
 
-        // member not in vc
         if(!event.getMemberVoiceState().inAudioChannel())
         {
             event.getTextChannel().sendMessage("you need to be in voice chanel for this to work").queue();
             return;
         }
-        //  bot not in VC
-        if(!event.getSelfVoiceState().inAudioChannel()) {
-
-           final AudioManager audioManager = event.getGuild().getAudioManager();
-           final  VoiceChannel memberChanel = (VoiceChannel) event.getMemberVoiceState().getChannel();
-            audioManager.openAudioConnection(memberChanel);
-
-        }
-
+        // get new song
         String[] input = event.getMessage().getContentRaw().split(" ", 3);
         String link ;
         link = input[2];
 
-        if(isUrl(link))
-        { PlayerManager.getINSTANCE().loadAndPlay(event.getTextChannel(), link,false);
+        final AudioManager audioManager = event.getGuild().getAudioManager();
+        final VoiceChannel memberChanel = (VoiceChannel) event.getMemberVoiceState().getChannel();
+        audioManager.openAudioConnection(memberChanel);
 
-        }
+
+            final GuildMusicManager musicManager = PlayerManager.getINSTANCE().getMusicManager(event.getGuild());
+            final AudioPlayer audioPlayer = musicManager.audioPlayer;
+
+           //add a song to the front of the queue
+
         if(!isUrl(link))
         {
             link = "ytsearch:" + link;
-
         }
-        PlayerManager.getINSTANCE().loadAndPlay(event.getTextChannel(), link,false);
-        return;
+        PlayerManager.getINSTANCE().loadAndPlay(event.getTextChannel(),link,true);
+
+
     }
     public boolean isUrl(String url)
     {
@@ -58,26 +49,21 @@ public class Play implements ICommand {
             new URL(url);
             return true;
         }  catch ( MalformedURLException e) {
-           return false;
+            return false;
         }
     }
-
-
     @Override
     public String getName() {
-        return "play";
+        return "playskip";
     }
 
     @Override
     public String helpMessage() {
-        return "this command is to play music.";
+        return null;
     }
 
     @Override
     public boolean needOwner() {
         return false;
     }
-
 }
-
-
