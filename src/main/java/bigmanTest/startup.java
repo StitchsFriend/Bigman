@@ -1,3 +1,4 @@
+/**
 package bigmanTest;
 
 import bigman.JDACommands.ICommand;
@@ -40,4 +41,4 @@ public class startup implements EventListener
                 .build();
     }
 }
-
+*/

@@ -1,6 +1,7 @@
 package bigman.commands;
 
 import bigman.JDACommands.ExecuteArgs;
+import bigmanTest.jdacommands.ExecuteArgs2;
 import bigman.JDACommands.ICommand;
 import bigman.music.GuildMusicManager;
 import bigman.music.PlayerManager;
@@ -57,10 +58,7 @@ public class PlaySkip implements ICommand {
         return "playskip";
     }
 
-    @Override
-    public String helpMessage() {
-        return null;
-    }
+
 
     @Override
     public boolean needOwner() {

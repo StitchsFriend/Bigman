@@ -14,7 +14,7 @@ public class TrackScheduler extends AudioEventAdapter{
     public boolean repeating = false;
     private int count =0;
 
-
+    //
     public TrackScheduler(AudioPlayer audioPlayer)
     {
         this.audioPlayer=audioPlayer;
@@ -51,13 +51,6 @@ public class TrackScheduler extends AudioEventAdapter{
             }
             nextTrack();
         }
-    }
-    public void skip()
-    {
-     if(!queue.isEmpty())
-     {
-
-     }
     }
 }
 

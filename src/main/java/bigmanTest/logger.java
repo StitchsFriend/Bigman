@@ -1,3 +1,4 @@
+/**
 package bigmanTest;
 
 import bigman.BotStartUp;
@@ -79,7 +80,7 @@ public class logger extends ListenerAdapter {
                 // Enables MessageReactionAddEvent for guild voice states
                 GatewayIntent.GUILD_VOICE_STATES
         );
-*/
+
 
         // To start the bot, you have to use the JDABuilder.
 
@@ -102,7 +103,7 @@ public class logger extends ListenerAdapter {
                     .enableCache(CacheFlag.VOICE_STATE)
 
                     .build();
-(           */
+(
             // Here you can now start using the jda instance before its fully loaded,
             // this can be useful for stuff like creating background services or similar.
 
@@ -191,3 +192,4 @@ public class logger extends ListenerAdapter {
     }
 
 }
+ */

@@ -17,21 +17,23 @@ import java.util.List;
 import java.util.Map;
 
 public class PlayerManager {
-
+    // set player manager to be singleton only one instance, bc a bot only have one player
     private static PlayerManager INSTANCE;
+    // maps guild id and guild music manager
     private final Map<Long,GuildMusicManager> musicManagers;
     private final AudioPlayerManager audioPlayerManager;
 
-    //constuature
+    //contracture
     public PlayerManager()
-    {
+    { // assigned music manager & audio play manager
         this.musicManagers= new HashMap<>();
         this.audioPlayerManager= new DefaultAudioPlayerManager();
-
+        // configure it use remote & local source
         AudioSourceManagers.registerRemoteSources(this.audioPlayerManager);
         AudioSourceManagers.registerLocalSource(this.audioPlayerManager);
 
     }
+    // instance is not assigned, only assigned when we need it
     public static PlayerManager getINSTANCE()
     {
         if(INSTANCE == null)
@@ -40,6 +42,7 @@ public class PlayerManager {
         }
         return INSTANCE;
     }
+    // get music manager form a guild
     public GuildMusicManager getMusicManager(Guild guild)
     {
         //  is going to be a lavaPlayer expression
@@ -50,40 +53,41 @@ public class PlayerManager {
 
         });
     }
-    // bot get
-    public  void loadAndPlay(TextChannel textChannel, String trackURL, boolean playskip)
+    /**
+     * Loading audio tracks
+     * @param textChannel TextChannel, user input command channel
+     * @param trackURL String, user input command content, url or keywords
+     * @param playskip boolean, check if is play skip command
+     */
+    public void loadAndPlay(TextChannel textChannel, String trackURL, boolean playskip)
     {
+        // get music manager
        final GuildMusicManager musicManager=this.getMusicManager(textChannel.getGuild());
-
-        this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler() {
+        this.audioPlayerManager.loadItemOrdered(musicManager, trackURL, new AudioLoadResultHandler()
+        {
             @Override
-            //if user pasted a url
+            //if user pasted an url - single track
             public void trackLoaded(AudioTrack audioTrack)
             {
                 if(playskip)
                 {
                     musicManager.scheduler.queue.addFirst(audioTrack);
                     textChannel.sendMessage("play skip to: ")
-                            .addContent("`"+audioTrack.getInfo().title+"`"+" by "+audioTrack.getInfo().author)
-                            .queue();
+                            .addContent("`"+audioTrack.getInfo().title+"`"+" by "+audioTrack.getInfo().author).queue();
                     musicManager.scheduler.nextTrack();
                 }
              else
                 {
                     musicManager.scheduler.queue(audioTrack);
                     textChannel.sendMessage("Adding to queue: **")
-                        .addContent(audioTrack.getInfo().title)
-                        .addContent("'** by ** '")
-                        .addContent(audioTrack.getInfo().author)
-                        .addContent("'**")
-                        .queue();
+                        .addContent(audioTrack.getInfo().title+"** by ** "+audioTrack.getInfo().author)
+                        .addContent("'**").queue();
 
                 }
             }
-
             @Override
-            // if user is search by keyword
-            // getting first track of all the tracks that user searched
+            // if user is search by keyword - multiple tracks
+            // getting first audio source of all the tracks that user searched
             public void playlistLoaded(AudioPlaylist audioPlaylist) {
                 final List<AudioTrack> tracks = audioPlaylist.getTracks();
                 if(playskip)
@@ -98,27 +102,14 @@ public class PlayerManager {
                 {
                     musicManager.scheduler.queue(tracks.get(0));
                     textChannel.sendMessage("Adding to queue **")
-                            .addContent(tracks.get(0).getInfo().title)
-                            //.addContent(String.valueOf(tracks.size()))
-                            .addContent("`by`")
-                            .addContent(tracks.get(0).getInfo().author)
-                            //.addContent(audioPlaylist.getName())
-                            .addContent("**")
-                            .queue();
+                            .addContent(tracks.get(0).getInfo().title +"** by ** "+ tracks.get(0).getInfo().author)
+                            .addContent("**").queue();
+                    //.addContent(String.valueOf(tracks.size())+ audioPlaylist.getName())
                 }
-                    /*
-                    for(final AudioTrack track : tracks)
-                    {
-                        musicManager.scheduler.queue(track);
-                    }
-
-                     */
-
             }
 
             @Override
             public void noMatches() {
-
             }
 
             @Override

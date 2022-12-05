@@ -1,7 +1,7 @@
 package bigman.JDACommands;
 
 
-import net.dv8tion.jda.api.requests.RestAction;
+import bigmanTest.jdacommands.ExecuteArgs2;
 
 import java.util.List;
 
@@ -10,13 +10,12 @@ public interface ICommand {
         // get name of command
         String getName();
 
-        String helpMessage();
-
         boolean needOwner();
         // command aliases
         default List<String> getAliases()
         {
             return List.of(); // use Array.asList if on java 8
         }
+
 
     }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class FortuneCommand extends ListenerAdapter {
+public class Fortune extends ListenerAdapter {
     public String prefix = "b!g ";
     public void onMessageReceived(MessageReceivedEvent event) {
         try {
@@ -22,8 +22,8 @@ public class FortuneCommand extends ListenerAdapter {
             ArrayList<String> explain= new ArrayList<String>(100);
 
 
-           Scanner s3 = new Scanner(new File("D:/2022 Fall/CM456 Capstone/bigman/src/main/java/bigman/files/fortuneEN.txt"));
-           Scanner s4 = new Scanner(new File("D:/2022 Fall/CM456 Capstone/bigman/src/main/java/bigman/files/explainEN.txt"));
+            Scanner s3 = new Scanner(new File("D:/2022 Fall/CM456 Capstone/bigman/src/main/java/bigman/files/fortuneEN.txt"));
+            Scanner s4 = new Scanner(new File("D:/2022 Fall/CM456 Capstone/bigman/src/main/java/bigman/files/explainEN.txt"));
             ArrayList<String> fortuneEN = new ArrayList<String>(100);
             ArrayList<String> explainEN= new ArrayList<String>(100);
 
@@ -65,14 +65,14 @@ public class FortuneCommand extends ListenerAdapter {
             int number = randomMsg.nextInt(fortuneCN.size()+1);
             int numberEng =randomMsg.nextInt(fortuneEN.size()+1);
 
-                if (event.getMessage().getContentRaw().equals(prefix + "求签")) {
-                    messageChanel.sendMessage("<@" + event.getAuthor().getId() + ">" + " 抽到第" + (number + 1) +" 签").queue();
-                    messageChanel.sendMessageEmbeds(info.setTitle(fortuneCN.get(number)).setDescription(poetryList.get(number)).addField("解签", "||" + explain.get(number) + "||", true).build()).queue();
-                }
-                else if(event.getMessage().getContentRaw().equals(prefix + "fortune")) {
-                    messageChanel.sendMessage("<@" + event.getAuthor().getId() + ">" + " you got No." + (number + 1) +" fortune").queue();
-                    messageChanel.sendMessageEmbeds(info.setTitle(fortuneEN.get(numberEng)).setDescription(poetryList.get(numberEng)).addField("Explain", "||" + explainEN.get(numberEng) + "||", true).build()).queue();
-                }
+            if (event.getMessage().getContentRaw().equals(prefix + "求签")) {
+                messageChanel.sendMessage("<@" + event.getAuthor().getId() + ">" + " 抽到第" + (number + 1) +" 签").queue();
+                messageChanel.sendMessageEmbeds(info.setTitle(fortuneCN.get(number)).setDescription(poetryList.get(number)).addField("解签", "||" + explain.get(number) + "||", true).build()).queue();
+            }
+            else if(event.getMessage().getContentRaw().equals(prefix + "fortune")) {
+                messageChanel.sendMessage("<@" + event.getAuthor().getId() + ">" + " you got No." + (number + 1) +" fortune").queue();
+                messageChanel.sendMessageEmbeds(info.setTitle(fortuneEN.get(numberEng)).setDescription(poetryList.get(numberEng)).addField("Explain", "||" + explainEN.get(numberEng) + "||", true).build()).queue();
+            }
 
         } catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
@@ -81,5 +81,3 @@ public class FortuneCommand extends ListenerAdapter {
 
     }
 }
-
-

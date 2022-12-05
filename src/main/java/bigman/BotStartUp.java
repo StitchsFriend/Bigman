@@ -26,43 +26,58 @@ public class BotStartUp
    public static final GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES,GatewayIntent.GUILD_MESSAGES,GatewayIntent.GUILD_MESSAGE_REACTIONS,GatewayIntent.MESSAGE_CONTENT,
                                                     GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, };
 
-    public static JDA bot;
-        public static void main(String[] args) throws LoginException {
+    public static JDA jda;
+        public static void main(String[] args) throws LoginException, InterruptedException {
 
-            //   JDACommands jdaCommands = new JDACommands("b!g");
-           //   jdaCommands.registerCommand(new Play());
-            //jdaCommands.registerCommand(new PlaySkip());
-           //  jdaCommands.registerCommand(new logger());
+               JDACommands jdaCommands = new JDACommands("b!g");
+               jdaCommands.registerCommand(new Play());
+               jdaCommands.registerCommand(new PlaySkip());
+               jdaCommands.registerCommand(new QueueCommand());
+               jdaCommands.registerCommand(new PauseCommand());
+               jdaCommands.registerCommand(new ResumeCommand());
+               jdaCommands.registerCommand(new SkipCommand());
+               jdaCommands.registerCommand(new StopCommand());
+               jdaCommands.registerCommand(new NowPlayingCommand());
 
-           bot =  JDABuilder.createDefault("MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18", Arrays.asList(INTENTS))
+               jdaCommands.registerCommand(new PingPong());
+               jdaCommands.registerCommand(new react());
+               jdaCommands.registerCommand(new mention());
+
+               jdaCommands.registerCommand(new diceRoller());
+               jdaCommands.registerCommand(new FortuneCHNommand());
+               jdaCommands.registerCommand(new FortuneENG());
+
+               jdaCommands.registerCommand(new esportsWebhook());
+               jdaCommands.registerCommand(new esportWebhokDelete());
+              // jdaCommands.registerCommand(new HelpCommand());
+              // jdaCommands.registerCommand(new logger());
+              // jdaCommands.registerCommand(new roleReactions());
+
+           jda =  JDABuilder.createDefault("MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18", Arrays.asList(INTENTS))
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .setActivity(Activity.playing("b!g Splatoon3"))
                         .setStatus(OnlineStatus.ONLINE)
                         .enableCache(CacheFlag.VOICE_STATE)
-                        .addEventListeners(new logger())
-                        .addEventListeners(new JoinCommand())
-                        .addEventListeners(new PlayCommand())
-                        .addEventListeners(new FortuneCommand())
-                        .addEventListeners(new StopCommand())
-                        .addEventListeners(new SkipCommand())
-                        .addEventListeners(new NowPlayingCommand())
-                  .addEventListeners(new QueueCommand())
-                   .addEventListeners(new PauseCommand())
-                   .addEventListeners(new ResumeCommand())
+
+                       // .addEventListeners(new JoinCommand())
                    .addEventListeners(new HelpCommand())
-                  .addEventListeners(new PlaySkipCommand())
-
-
-                  // .addEventListeners(jdaCommands)
+                   .addEventListeners(new logger())
+                   .addEventListeners(new roleReactions())
+                   .addEventListeners(jdaCommands)
                         .build();
-         //  commands.put("play", new PlayCommand());
+            try {
+                jda.getRestPing().queue(ping ->
+                        System.out.println("Logged in with ping: " + ping)
+                );
 
+                jda.awaitReady();
 
-            //setupCommands();
+                System.out.println("Guilds: " + jda.getGuildCache().size());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
-
-    //private static void setupCommands() {
-           // commands.put("play",new Play());
     }
 
 
