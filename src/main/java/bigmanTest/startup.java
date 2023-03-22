@@ -30,7 +30,7 @@ public class startup implements EventListener
         jdacommands test  = new jdacommands("b!g ");
         test.registerCommand(new playcommand());
 
-        bot = JDABuilder.createDefault("MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18", Arrays.asList(INTENTS))
+        bot = JDABuilder.createDefault("BOT TOKEN", Arrays.asList(INTENTS))
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .setActivity(Activity.playing("b!g Splatoon3"))
                 .setStatus(OnlineStatus.ONLINE)
