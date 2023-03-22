@@ -7,10 +7,13 @@ Xuan Lu, Edward Baker
 
 --------------------------------------------------
 Features:
--Join multiple servers
--Help command
+
+Join multiple servers
+
+Help command
 --help
--Music commands
+
+Music commands
 --play <keyword or url>
 --pause
 --resume
@@ -18,19 +21,22 @@ Features:
 --queue
 --nowplaying
 --stop
--Moderation Commands
+
+Moderation Commands
 --roles
--Fun Commands
+
+Fun Commands
 --roll <# of rolls>d<sides of dice>
 --fortune
--eSports
+
+eSports
 --eAdd
 --eDelete
 
 -------------------------------------------------
 Necessary Applications:
-IntelliJ IDEA
-Maven compiler for IntelliJ IDEA
+IntelliJ IDEA,
+Maven compiler for IntelliJ IDEA,
 Discord
 
 -------------------------------------------------
