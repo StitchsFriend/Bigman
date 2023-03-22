@@ -53,7 +53,7 @@ public class BotStartUp
               // jdaCommands.registerCommand(new logger());
               // jdaCommands.registerCommand(new roleReactions());
 
-           jda =  JDABuilder.createDefault("MTAxNjg5NzIzNDkzNzMxNTM3OA.Gz2m-J._fUKFgUDfVJsPi76bcIArc7riN_mYcqA2APK18", Arrays.asList(INTENTS))
+           jda =  JDABuilder.createDefault("BOT TOKEN", Arrays.asList(INTENTS))
                         .setMemberCachePolicy(MemberCachePolicy.ALL)
                         .setActivity(Activity.playing("b!g Splatoon3"))
                         .setStatus(OnlineStatus.ONLINE)
